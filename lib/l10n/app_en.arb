@@ -1,0 +1,21 @@
+{
+  "@@locale": "en",
+  "appTitle": "My Project",
+  "login": "Login",
+  "signup": "Sign Up",
+  "email": "Email",
+  "password": "Password",
+  "pleaseEnterEmail": "Please enter email",
+  "pleaseEnterPassword": "Please enter password",
+  "invalidEmail": "Please enter a valid email",
+  "passwordMinLength": "Password must contain at least 6 characters",
+  "name": "Name",
+  "address": "Address",
+  "clickHereTo": "Click Here to",
+  "registration": "Registration",
+  "userCreated": "User Created",
+  "serverError": "Server Error",
+  "unknownError": "Unknown Error",
+  "messageErrorLostConnect": "Connection lost",
+  "messageErrorProcessFailure": "Process failed"
+}
