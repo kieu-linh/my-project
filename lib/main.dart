@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:my_project/api/api_client.dart';
 import 'package:my_project/router/app_router.dart';
 import 'package:my_project/utils/locator.dart';
 import 'package:my_project/utils/share_prefs.dart';
@@ -19,19 +18,11 @@ main() async {
   );
   setupLocator();
   await locator<SharedPrefs>().init();
-
-  // Setup unauthorized callback
-  locator<ApiClient>().onUnauthorized = () {
-    locator<ApiClient>().onUnauthorized = null;
-    AppRouter.goLogin(MyApp.navigatorKey.currentContext!);
-  };
-
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {

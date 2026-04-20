@@ -1,8 +1,7 @@
 import 'package:my_project/base/base_view_model.dart';
 import 'package:my_project/components/common/error.dart';
 import 'package:my_project/components/common/loading.dart';
-import 'package:my_project/components/dialog/loading_popup.dart';
-import 'package:my_project/screen/auth/login/login_screen.dart';
+import 'package:my_project/router/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -22,32 +21,23 @@ mixin BasePage<T extends BaseViewModel> {
         create: (context) {
           _provider = create();
 
-          _provider.onShowLoading = () {
-            LoadingPopup.show(context);
-          };
-
-          _provider.onHideLoading = () {
-            Navigator.of(context).pop();
-          };
-
           _provider.onShowError = (message) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(message), backgroundColor: Colors.red));
-            // PopupMessage.showError(context, message);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text(message), backgroundColor: Colors.red));
+            }
           };
 
           _provider.onShowNotification = (message) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content: Text(message), backgroundColor: Colors.green));
-            // PopupMessage.showNotification(context, message);
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(message), backgroundColor: Colors.green));
+            }
           };
 
           _provider.onLogOut = () {
             _provider.prefs.removeAll();
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
-                (route) => false);
+            AppRouter.goLogin(context);
           };
 
           initialise(context);
@@ -58,10 +48,22 @@ mixin BasePage<T extends BaseViewModel> {
           builder: (context, provider, _) {
             _provider = provider;
 
+            if (provider.isloading) {
+              return Stack(
+                children: [
+                  builder.call(),
+                  Container(
+                    color: Colors.black26,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
+                ],
+              );
+            }
+
             state() {
               switch (provider.state) {
-                case ChangeState.clone:
-                  return Container(child: builder.call());
                 case ChangeState.blank:
                   return const Scaffold();
                 case ChangeState.loading:
@@ -69,7 +71,7 @@ mixin BasePage<T extends BaseViewModel> {
                 case ChangeState.serverError:
                   return const ServerErrorWidget();
                 case ChangeState.page:
-                  return builder.call();
+                case ChangeState.clone:
                 default:
                   return builder.call();
               }
@@ -80,10 +82,6 @@ mixin BasePage<T extends BaseViewModel> {
                 if (info.visibleFraction >= 1) {
                   try {
                     _provider.appear();
-                  } catch (_) {}
-                } else if (info.visibleFraction <= 0) {
-                  try {
-                    // _provider.disAppear();
                   } catch (_) {}
                 }
               },

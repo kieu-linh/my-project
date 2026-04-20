@@ -5,6 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:my_project/api/api_config.dart';
 import 'package:my_project/api/auth_services.dart';
+import 'package:my_project/repositories/book_repo.dart';
+import 'package:my_project/repositories/borrow_repo.dart';
+import 'package:my_project/repositories/member_repo.dart';
 import 'package:my_project/utils/locator.dart';
 import 'package:my_project/utils/share_prefs.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -22,6 +25,9 @@ class ApiClient {
     ),
   );
   late AuthRepo authRepo;
+  late BookRepo bookRepo;
+  late MemberRepo memberRepo;
+  late BorrowRepo borrowRepo;
   VoidCallback? onUnauthorized;
 
   ApiClient() {
@@ -74,5 +80,8 @@ class ApiClient {
     );
 
     authRepo = AuthRepo(_dio);
+    bookRepo = BookRepo(_dio);
+    memberRepo = MemberRepo(_dio);
+    borrowRepo = BorrowRepo(_dio);
   }
 }
