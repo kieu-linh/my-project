@@ -8,7 +8,7 @@ class SignupVM extends BaseViewModel {
   void onInit() {}
   final formKey = GlobalKey<FormState>();
   bool obscureText = true;
-  String? name, email, password, phone, address;
+  String? name, email, password, phone;
 
   VoidCallback? onRegisterSuccess;
 
@@ -22,13 +22,12 @@ class SignupVM extends BaseViewModel {
       formKey.currentState!.save();
       showLoading();
       try {
-        // Mock register - replace with actual API call
-        await Future.delayed(const Duration(seconds: 1));
-
-        // Simulate success
+        final res = await api.authRepo.signup(email!, password!, name!, phone!);
         hideLoading();
-        showNotification('memberCreated');
-        onRegisterSuccess?.call();
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          showNotification('memberCreated');
+          onRegisterSuccess?.call();
+        }
       } catch (e) {
         hideLoading();
         if (e is DioError && e.response?.statusCode == 422) {

@@ -2,7 +2,6 @@ import 'package:my_project/base/base_page.dart';
 import 'package:my_project/constants/constants.dart';
 import 'package:my_project/extensions/app_extensions.dart';
 import 'package:my_project/models/book.dart';
-import 'package:my_project/models/member.dart';
 import 'package:my_project/screen/borrow/borrow_form_vm.dart';
 import 'package:flutter/material.dart';
 
@@ -37,8 +36,6 @@ class _BorrowFormScreenState extends State<BorrowFormScreen> with BasePage<Borro
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildBookSelector(),
-              const SizedBox(height: 16),
-              _buildMemberSelector(),
               const SizedBox(height: 16),
               _buildDurationSelector(),
               const SizedBox(height: 32),
@@ -94,7 +91,7 @@ class _BorrowFormScreenState extends State<BorrowFormScreen> with BasePage<Borro
 
   Widget _buildBookOption(Book book) {
     final isSelected = provider.selectedBook?.id == book.id;
-    final isAvailable = book.availableQuantity > 0;
+    final isAvailable = book.availableCopies > 0;
 
     return GestureDetector(
       onTap: isAvailable ? () => provider.setSelectedBook(book) : null,
@@ -111,9 +108,26 @@ class _BorrowFormScreenState extends State<BorrowFormScreen> with BasePage<Borro
         ),
         child: Row(
           children: [
-            Icon(
-              Icons.menu_book,
-              color: isAvailable ? AppColors.primary : AppColors.grey,
+            Container(
+              width: 50,
+              height: 70,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                color: AppColors.primaryLight,
+              ),
+              child: book.coverUrl != null
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        book.coverUrl!,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const Icon(
+                          Icons.menu_book,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    )
+                  : const Icon(Icons.menu_book, color: AppColors.primary),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -144,93 +158,13 @@ class _BorrowFormScreenState extends State<BorrowFormScreen> with BasePage<Borro
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                '${book.availableQuantity}',
+                '${book.availableCopies}',
                 style: TextStyle(
                   color: isAvailable ? AppColors.success : AppColors.error,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMemberSelector() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            context.l10n.selectMember,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          const SizedBox(height: 12),
-          ...provider.members.map((member) => _buildMemberOption(member)),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMemberOption(Member member) {
-    final isSelected = provider.selectedMember?.id == member.id;
-
-    return GestureDetector(
-      onTap: () => provider.setSelectedMember(member),
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 8),
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary.withOpacity(0.1) : Colors.grey.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Row(
-          children: [
-            CircleAvatar(
-              backgroundColor: AppColors.primary,
-              child: Text(
-                member.name.isNotEmpty ? member.name[0].toUpperCase() : '?',
-                style: const TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    member.name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    member.email,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: AppColors.grey,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (isSelected)
-              const Icon(Icons.check_circle, color: AppColors.primary),
           ],
         ),
       ),

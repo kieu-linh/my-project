@@ -27,7 +27,7 @@ class AppRouter {
       GoRoute(
         path: '/login',
         name: 'login',
-        builder: (context, state) => const LoginScreen(),
+        builder: (context, state) => LoginScreen(email: state.extra as String?),
       ),
       GoRoute(
         path: '/signup',
@@ -110,8 +110,8 @@ class AppRouter {
     ],
   );
 
-  static void goLogin(BuildContext context) {
-    context.goNamed('login');
+  static void goLogin(BuildContext context, {String? email}) {
+    context.goNamed('login', extra: email);
   }
 
   static void goSignup(BuildContext context) {

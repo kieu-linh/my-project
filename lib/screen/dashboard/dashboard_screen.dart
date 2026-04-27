@@ -44,7 +44,7 @@ class _DashboardScreenState extends State<DashboardScreen> with BasePage<Dashboa
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [AppColors.primary, AppColors.primaryDark],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -161,7 +161,7 @@ class _DashboardScreenState extends State<DashboardScreen> with BasePage<Dashboa
             children: [
               Text(
                 value,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: AppColors.greyDark,
@@ -170,7 +170,7 @@ class _DashboardScreenState extends State<DashboardScreen> with BasePage<Dashboa
               const SizedBox(height: 4),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 12,
                   color: AppColors.grey,
                 ),
@@ -253,7 +253,7 @@ class _DashboardScreenState extends State<DashboardScreen> with BasePage<Dashboa
                 const SizedBox(height: 4),
                 Text(
                   time,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: AppColors.grey,
                   ),

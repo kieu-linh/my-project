@@ -6,7 +6,8 @@ import 'package:my_project/screen/auth/login/login_vm.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  final String? email;
+  const LoginScreen({Key? key, this.email}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -19,9 +20,8 @@ class _LoginScreenState extends State<LoginScreen> with BasePage<LoginVM> {
   @override
   void initState() {
     super.initState();
-    // Demo login - remove in production
-    _emailController.text = 'admin@test.com';
-    _passwordController.text = 'password123';
+    _emailController.text = widget.email ?? '';
+    _passwordController.text = '';
   }
 
   @override
@@ -261,9 +261,7 @@ class _LoginScreenState extends State<LoginScreen> with BasePage<LoginVM> {
 
   @override
   void initialise(BuildContext context) {
-    provider.onLoginSuccess = () {
-      AppRouter.goDashboard(context);
-    };
+    provider.setContext(context);
   }
 
   @override

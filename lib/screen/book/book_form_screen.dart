@@ -61,11 +61,11 @@ class _BookFormScreenState extends State<BookFormScreen> with BasePage<BookFormV
                 ),
                 const SizedBox(height: 16),
                 _buildTextField(
-                  label: context.l10n.isbn,
-                  initialValue: provider.isbn,
-                  onSave: provider.setIsbn,
+                  label: 'Category',
+                  initialValue: provider.category,
+                  onSave: provider.setCategory,
                   validator: (v) => v?.isEmpty ?? true ? 'Required' : null,
-                  icon: Icons.qr_code,
+                  icon: Icons.category,
                 ),
                 const SizedBox(height: 16),
                 _buildQuantitySelector(),
@@ -159,14 +159,14 @@ class _BookFormScreenState extends State<BookFormScreen> with BasePage<BookFormV
           const Icon(Icons.inventory_2, color: AppColors.primary),
           const SizedBox(width: 16),
           Text(
-            context.l10n.quantity,
+            'Total Copies',
             style: const TextStyle(fontSize: 16),
           ),
           const Spacer(),
           IconButton(
-            onPressed: provider.quantity > 1
+            onPressed: provider.totalCopies > 1
                 ? () {
-                    provider.setQuantity(provider.quantity - 1);
+                    provider.setTotalCopies(provider.totalCopies - 1);
                   }
                 : null,
             icon: Container(
@@ -185,7 +185,7 @@ class _BookFormScreenState extends State<BookFormScreen> with BasePage<BookFormV
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              provider.quantity.toString(),
+              provider.totalCopies.toString(),
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
@@ -195,7 +195,7 @@ class _BookFormScreenState extends State<BookFormScreen> with BasePage<BookFormV
           ),
           IconButton(
             onPressed: () {
-              provider.setQuantity(provider.quantity + 1);
+              provider.setTotalCopies(provider.totalCopies + 1);
             },
             icon: Container(
               padding: const EdgeInsets.all(4),

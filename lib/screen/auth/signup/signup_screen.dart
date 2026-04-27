@@ -17,7 +17,6 @@ class _SignUpState extends State<SignUp> with BasePage<SignupVM> {
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _addressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -138,16 +137,6 @@ class _SignUpState extends State<SignUp> with BasePage<SignupVM> {
                 },
                 onSaved: (v) => provider.password = v,
               ),
-              const SizedBox(height: 16),
-              _buildTextField(
-                controller: _addressController,
-                icon: Icons.location_on_outlined,
-                label: context.l10n.address,
-                hint: '123 Main St',
-                maxLines: 2,
-                validator: (v) => null,
-                onSaved: (v) => provider.address = v,
-              ),
               const SizedBox(height: 32),
               ElevatedButton(
                 onPressed: provider.register,
@@ -261,7 +250,7 @@ class _SignUpState extends State<SignUp> with BasePage<SignupVM> {
   @override
   void initialise(BuildContext context) {
     provider.onRegisterSuccess = () {
-      AppRouter.goLogin(context);
+      AppRouter.goLogin(context, email: provider.email);
     };
   }
 
@@ -271,7 +260,6 @@ class _SignUpState extends State<SignUp> with BasePage<SignupVM> {
     _emailController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
-    _addressController.dispose();
     super.dispose();
   }
 }

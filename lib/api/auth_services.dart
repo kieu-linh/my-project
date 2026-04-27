@@ -16,14 +16,13 @@ class _AuthServices implements AuthRepo {
   @override
   Future login(String email, password) async {
     try {
-      FormData body = FormData();
-      body.fields.addAll(
-        [
-          MapEntry('email', email),
-          MapEntry('password', password),
-        ],
+      final res = await _dio.post(
+        ApiConfig.login,
+        data: {
+          'email': email,
+          'password': password,
+        },
       );
-      var res = await _dio.post(ApiConfig.login, data: body);
       return res;
     } catch (e) {
       log("error api call login", error: e);
@@ -33,21 +32,20 @@ class _AuthServices implements AuthRepo {
 
   @override
   Future signup(
-      String email, String password, String name, String address) async {
+      String email, String password, String name, String phone) async {
     try {
-      FormData body = FormData();
-      body.fields.addAll(
-        [
-          MapEntry('email', email),
-          MapEntry('password', password),
-          MapEntry('name', name),
-          MapEntry('address', address),
-        ],
+      final res = await _dio.post(
+        ApiConfig.signup,
+        data: {
+          'email': email,
+          'password': password,
+          'name': name,
+          'phone': phone,
+        },
       );
-      var res = await _dio.post(ApiConfig.signup, data: body);
       return res;
     } catch (e) {
-      log("error api call login", error: e);
+      log("error api call signup", error: e);
       return false;
     }
   }

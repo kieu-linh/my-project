@@ -8,6 +8,7 @@ class SharedPrefs {
   static const String tokenKey = 'tokenkey';
   static const String userIdKey = 'userId';
   static const String userKey = 'user';
+  static const String bookStatsKey = 'bookStats';
 
   SharedPreferences? _prefs;
 
@@ -60,6 +61,13 @@ class SharedPrefs {
 
   void removeUser() {
     _prefs!.remove(userKey);
+  }
+
+  // Book Stats //
+  int get bookStats => _prefs!.getInt(bookStatsKey) ?? 0;
+
+  set bookStats(int count) {
+    _prefs?.setInt(bookStatsKey, count);
   }
 
   //Remove all

@@ -1,11 +1,11 @@
 class Book {
-  final String id;
+  final int id;
   final String title;
   final String author;
-  final String isbn;
-  final int quantity;
-  final int availableQuantity;
-  final String? imageUrl;
+  final String category;
+  final int totalCopies;
+  final int availableCopies;
+  final String? coverUrl;
   final String? description;
   final DateTime createdAt;
 
@@ -13,26 +13,26 @@ class Book {
     required this.id,
     required this.title,
     required this.author,
-    required this.isbn,
-    required this.quantity,
-    required this.availableQuantity,
-    this.imageUrl,
+    required this.category,
+    required this.totalCopies,
+    required this.availableCopies,
+    this.coverUrl,
     this.description,
     required this.createdAt,
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
-      id: json['id']?.toString() ?? '',
+      id: json['id'] ?? 0,
       title: json['title'] ?? '',
       author: json['author'] ?? '',
-      isbn: json['isbn'] ?? '',
-      quantity: json['quantity'] ?? 0,
-      availableQuantity: json['available_quantity'] ?? 0,
-      imageUrl: json['image_url'],
+      category: json['category'] ?? '',
+      totalCopies: json['totalCopies'] ?? 0,
+      availableCopies: json['availableCopies'] ?? 0,
+      coverUrl: json['coverUrl'],
       description: json['description'],
-      createdAt: json['created_at'] != null
-          ? DateTime.parse(json['created_at'])
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'])
           : DateTime.now(),
     );
   }
@@ -42,23 +42,23 @@ class Book {
       'id': id,
       'title': title,
       'author': author,
-      'isbn': isbn,
-      'quantity': quantity,
-      'available_quantity': availableQuantity,
-      'image_url': imageUrl,
+      'category': category,
+      'totalCopies': totalCopies,
+      'availableCopies': availableCopies,
+      'coverUrl': coverUrl,
       'description': description,
-      'created_at': createdAt.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
   Book copyWith({
-    String? id,
+    int? id,
     String? title,
     String? author,
-    String? isbn,
-    int? quantity,
-    int? availableQuantity,
-    String? imageUrl,
+    String? category,
+    int? totalCopies,
+    int? availableCopies,
+    String? coverUrl,
     String? description,
     DateTime? createdAt,
   }) {
@@ -66,10 +66,10 @@ class Book {
       id: id ?? this.id,
       title: title ?? this.title,
       author: author ?? this.author,
-      isbn: isbn ?? this.isbn,
-      quantity: quantity ?? this.quantity,
-      availableQuantity: availableQuantity ?? this.availableQuantity,
-      imageUrl: imageUrl ?? this.imageUrl,
+      category: category ?? this.category,
+      totalCopies: totalCopies ?? this.totalCopies,
+      availableCopies: availableCopies ?? this.availableCopies,
+      coverUrl: coverUrl ?? this.coverUrl,
       description: description ?? this.description,
       createdAt: createdAt ?? this.createdAt,
     );

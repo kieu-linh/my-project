@@ -5,6 +5,7 @@ class BorrowRecord {
   final String bookId;
   final String memberId;
   final String bookTitle;
+  final String? coverUrl;
   final String memberName;
   final DateTime borrowDate;
   final DateTime dueDate;
@@ -16,6 +17,7 @@ class BorrowRecord {
     required this.bookId,
     required this.memberId,
     required this.bookTitle,
+    this.coverUrl,
     required this.memberName,
     required this.borrowDate,
     required this.dueDate,
@@ -29,6 +31,7 @@ class BorrowRecord {
       bookId: json['book_id'] ?? '',
       memberId: json['member_id'] ?? '',
       bookTitle: json['book_title'] ?? '',
+      coverUrl: json['cover_url'],
       memberName: json['member_name'] ?? '',
       borrowDate: json['borrow_date'] != null
           ? DateTime.parse(json['borrow_date'])
@@ -60,6 +63,7 @@ class BorrowRecord {
       'book_id': bookId,
       'member_id': memberId,
       'book_title': bookTitle,
+      'cover_url': coverUrl,
       'member_name': memberName,
       'borrow_date': borrowDate.toIso8601String(),
       'due_date': dueDate.toIso8601String(),
@@ -73,6 +77,7 @@ class BorrowRecord {
     String? bookId,
     String? memberId,
     String? bookTitle,
+    String? coverUrl,
     String? memberName,
     DateTime? borrowDate,
     DateTime? dueDate,
@@ -84,6 +89,7 @@ class BorrowRecord {
       bookId: bookId ?? this.bookId,
       memberId: memberId ?? this.memberId,
       bookTitle: bookTitle ?? this.bookTitle,
+      coverUrl: coverUrl ?? this.coverUrl,
       memberName: memberName ?? this.memberName,
       borrowDate: borrowDate ?? this.borrowDate,
       dueDate: dueDate ?? this.dueDate,

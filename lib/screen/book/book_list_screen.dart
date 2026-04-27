@@ -141,7 +141,12 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
                   color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: const Icon(Icons.menu_book, color: AppColors.primary),
+                child: book.coverUrl != null
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(book.coverUrl!, fit: BoxFit.cover),
+                      )
+                    : const Icon(Icons.menu_book, color: AppColors.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -169,12 +174,12 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
                     Row(
                       children: [
                         _buildTag(
-                          '${book.availableQuantity}/${book.quantity}',
-                          book.availableQuantity > 0 ? AppColors.success : AppColors.error,
+                          '${book.availableCopies}/${book.totalCopies}',
+                          book.availableCopies > 0 ? AppColors.success : AppColors.error,
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          'ISBN: ${book.isbn}',
+                          book.category,
                           style: TextStyle(
                             color: AppColors.grey,
                             fontSize: 12,

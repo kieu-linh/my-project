@@ -15,11 +15,10 @@ class MainShell extends StatefulWidget {
 class _MainShellState extends State<MainShell> {
   int _currentIndex = 0;
 
-  final _routes = ['/dashboard', '/books', '/borrows', '/profile'];
+  final _routes = ['/books', '/borrows', '/profile'];
 
   @override
   Widget build(BuildContext context) {
-    // Update current index based on current route
     final location = GoRouterState.of(context).uri.toString();
     _currentIndex = _getIndexFromLocation(location);
 
@@ -42,10 +41,10 @@ class _MainShellState extends State<MainShell> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(0, Icons.dashboard_outlined, Icons.dashboard, context.l10n.dashboard),
-                _buildNavItem(1, Icons.menu_book_outlined, Icons.menu_book, context.l10n.books),
-                _buildNavItem(2, Icons.swap_horiz_outlined, Icons.swap_horiz, context.l10n.borrowReturn),
-                _buildNavItem(3, Icons.person_outline, Icons.person, context.l10n.profile),
+                // _buildNavItem(0, Icons.dashboard_outlined, Icons.dashboard, context.l10n.dashboard),
+                _buildNavItem(0, Icons.menu_book_outlined, Icons.menu_book, context.l10n.books),
+                _buildNavItem(1, Icons.swap_horiz_outlined, Icons.swap_horiz, context.l10n.borrowReturn),
+                _buildNavItem(2, Icons.person_outline, Icons.person, context.l10n.profile),
               ],
             ),
           ),
@@ -55,9 +54,9 @@ class _MainShellState extends State<MainShell> {
   }
 
   int _getIndexFromLocation(String location) {
-    if (location.startsWith('/books')) return 1;
-    if (location.startsWith('/borrows')) return 2;
-    if (location.startsWith('/profile')) return 3;
+    if (location.startsWith('/books')) return 0;
+    if (location.startsWith('/borrows')) return 1;
+    if (location.startsWith('/profile')) return 2;
     return 0;
   }
 

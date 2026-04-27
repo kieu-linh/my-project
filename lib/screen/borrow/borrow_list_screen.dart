@@ -153,12 +153,25 @@ class _BorrowListScreenState extends State<BorrowListScreen> with BasePage<Borro
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  width: 50,
+                  height: 70,
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
+                    color: AppColors.primaryLight,
                   ),
-                  child: const Icon(Icons.menu_book, color: AppColors.primary),
+                  child: borrow.coverUrl != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Image.network(
+                            borrow.coverUrl!,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, __, ___) => const Icon(
+                              Icons.menu_book,
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        )
+                      : const Icon(Icons.menu_book, color: AppColors.primary),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
