@@ -98,6 +98,10 @@ class _BorrowListScreenState extends State<BorrowListScreen> with BasePage<Borro
   }
 
   Widget _buildBorrowList() {
+    if (provider.isloading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     if (provider.filteredBorrows.isEmpty) {
       return Center(
         child: Column(

@@ -13,6 +13,8 @@ import 'package:my_project/screen/member/member_list_screen.dart';
 import 'package:my_project/screen/member/member_form_screen.dart';
 import 'package:my_project/screen/profile/profile_screen.dart';
 import 'package:my_project/screen/main_shell.dart';
+import 'package:my_project/utils/locator.dart';
+import 'package:my_project/utils/share_prefs.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -23,6 +25,22 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     initialLocation: '/login',
     observers: [_routerObserver],
+    redirect: (context, state) {
+      final prefs = locator<SharedPrefs>();
+      final isLoggedIn = prefs.token != null && prefs.token!.isNotEmpty;
+      final isLoginPage = state.uri.toString() == '/login';
+      final isSignupPage = state.uri.toString() == '/signup';
+
+      // Nếu đã login và vào login/signup page thì redirect sang books
+      if (isLoggedIn && (isLoginPage || isSignupPage)) {
+        return '/books';
+      }
+      // Nếu chưa login và không phải login/signup page thì redirect sang login
+      if (!isLoggedIn && !isLoginPage && !isSignupPage) {
+        return '/login';
+      }
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/login',

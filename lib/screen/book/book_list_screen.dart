@@ -13,7 +13,8 @@ class BookListScreen extends StatefulWidget {
   _BookListScreenState createState() => _BookListScreenState();
 }
 
-class _BookListScreenState extends State<BookListScreen> with BasePage<BookListVM> {
+class _BookListScreenState extends State<BookListScreen>
+    with BasePage<BookListVM> {
   final _searchController = TextEditingController();
 
   @override
@@ -29,11 +30,6 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
               Expanded(child: _buildBookList()),
             ],
           ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => AppRouter.goAddBook(context),
-          backgroundColor: AppColors.primary,
-          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );
@@ -77,7 +73,8 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
           hintText: context.l10n.search,
           prefixIcon: const Icon(Icons.search, color: AppColors.grey),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         ),
       ),
     );
@@ -89,11 +86,11 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.menu_book, size: 64, color: AppColors.grey),
+            const Icon(Icons.menu_book, size: 64, color: AppColors.grey),
             const SizedBox(height: 16),
             Text(
               context.l10n.noBooksAvailable,
-              style: TextStyle(color: AppColors.grey),
+              style: const TextStyle(color: AppColors.grey),
             ),
           ],
         ),
@@ -132,68 +129,88 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
         borderRadius: BorderRadius.circular(16),
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
+          child: Column(
             children: [
-              Container(
-                width: 60,
-                height: 80,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryLight,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: book.coverUrl != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: Image.network(book.coverUrl!, fit: BoxFit.cover),
-                      )
-                    : const Icon(Icons.menu_book, color: AppColors.primary),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      book.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+              Row(
+                children: [
+                  Container(
+                    width: 60,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      book.author,
-                      style: TextStyle(
-                        color: AppColors.grey,
-                        fontSize: 14,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
+                    child: book.coverUrl != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(book.coverUrl!,
+                                fit: BoxFit.cover),
+                          )
+                        : const Icon(Icons.menu_book, color: AppColors.primary),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _buildTag(
-                          '${book.availableCopies}/${book.totalCopies}',
-                          book.availableCopies > 0 ? AppColors.success : AppColors.error,
-                        ),
-                        const SizedBox(width: 8),
                         Text(
-                          book.category,
-                          style: TextStyle(
-                            color: AppColors.grey,
-                            fontSize: 12,
+                          book.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          book.author,
+                          style: const TextStyle(
+                            color: AppColors.grey,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            _buildTag(
+                              '${book.availableCopies}/${book.totalCopies}',
+                              book.availableCopies > 0
+                                  ? AppColors.success
+                                  : AppColors.error,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              book.category,
+                              style: const TextStyle(
+                                color: AppColors.grey,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => provider.borrowBook(book.id),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 6),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(context.l10n.borrowBook),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.delete_outline, color: AppColors.error),
-                onPressed: () => _showDeleteDialog(book),
-              ),
+              )
             ],
           ),
         ),
@@ -235,7 +252,8 @@ class _BookListScreenState extends State<BookListScreen> with BasePage<BookListV
               Navigator.pop(context);
               provider.deleteBook(book.id);
             },
-            child: Text(context.l10n.delete, style: const TextStyle(color: AppColors.error)),
+            child: Text(context.l10n.delete,
+                style: const TextStyle(color: AppColors.error)),
           ),
         ],
       ),

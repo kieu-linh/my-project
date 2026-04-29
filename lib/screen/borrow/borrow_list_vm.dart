@@ -14,8 +14,9 @@ class BorrowListVM extends BaseViewModel {
   Future<void> loadBorrows() async {
     showLoading();
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      borrows = _getMockBorrows();
+      final result = await api.borrowRepo.getMyBorrows();
+      final List<dynamic> data = result is List ? result : (result['data'] ?? []);
+      borrows = data.map((json) => BorrowRecord.fromJson(json)).toList();
       applyFilter();
       hideLoading();
       notifyListeners();
@@ -42,58 +43,19 @@ class BorrowListVM extends BaseViewModel {
   Future<void> returnBook(String recordId) async {
     showLoading();
     try {
-      await Future.delayed(const Duration(seconds: 1));
-      final index = borrows.indexWhere((b) => b.id == recordId);
-      if (index != -1) {
-        borrows[index] = borrows[index].copyWith(
-          status: BorrowStatus.returned,
-          returnDate: DateTime.now(),
-        );
-        applyFilter();
-      }
-      showNotification('bookReturnedSuccessfully');
+      final res = await api.borrowRepo.returnBook(int.parse(recordId));
       hideLoading();
-      notifyListeners();
+      // Kiểm tra response có thành công không
+      if (res['error'] != null) {
+        showError(res['error'].toString());
+      } else {
+        showNotification('bookReturnedSuccessfully');
+        loadBorrows();
+      }
     } catch (e) {
       hideLoading();
       showError(e.toString());
     }
-  }
-
-  List<BorrowRecord> _getMockBorrows() {
-    return [
-      BorrowRecord(
-        id: '1',
-        bookId: '1',
-        memberId: '1',
-        bookTitle: 'Clean Code',
-        memberName: 'John Doe',
-        borrowDate: DateTime.now().subtract(const Duration(days: 5)),
-        dueDate: DateTime.now().add(const Duration(days: 9)),
-        status: BorrowStatus.borrowed,
-      ),
-      BorrowRecord(
-        id: '2',
-        bookId: '2',
-        memberId: '2',
-        bookTitle: 'The Pragmatic Programmer',
-        memberName: 'Jane Smith',
-        borrowDate: DateTime.now().subtract(const Duration(days: 20)),
-        dueDate: DateTime.now().subtract(const Duration(days: 6)),
-        status: BorrowStatus.overdue,
-      ),
-      BorrowRecord(
-        id: '3',
-        bookId: '3',
-        memberId: '1',
-        bookTitle: 'Design Patterns',
-        memberName: 'John Doe',
-        borrowDate: DateTime.now().subtract(const Duration(days: 30)),
-        dueDate: DateTime.now().subtract(const Duration(days: 16)),
-        returnDate: DateTime.now().subtract(const Duration(days: 17)),
-        status: BorrowStatus.returned,
-      ),
-    ];
   }
 
   void refresh() => loadBorrows();

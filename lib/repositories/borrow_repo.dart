@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:my_project/api/api_config.dart';
 import 'package:my_project/models/borrow_record.dart';
 
 class BorrowRepo {
@@ -8,7 +9,7 @@ class BorrowRepo {
 
   Future<Map<String, dynamic>> createBorrow(int bookId) async {
     try {
-      final response = await _dio.post('api/borrows', data: {
+      final response = await _dio.post(ApiConfig.borrows, data: {
         'bookId': bookId,
       });
       return response.data;
@@ -19,16 +20,16 @@ class BorrowRepo {
 
   Future<Map<String, dynamic>> returnBook(int id) async {
     try {
-      final response = await _dio.put('api/borrows/$id/return');
+      final response = await _dio.put(ApiConfig.returnBook(id));
       return response.data;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<Map<String, dynamic>> getMyBorrows() async {
+  Future<dynamic> getMyBorrows() async {
     try {
-      final response = await _dio.post('api/borrows/me');
+      final response = await _dio.get(ApiConfig.myBorrows);
       return response.data;
     } catch (e) {
       rethrow;

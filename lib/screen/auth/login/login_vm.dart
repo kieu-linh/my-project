@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:my_project/base/base_view_model.dart';
 import 'package:my_project/model/auth_response_model.dart';
@@ -35,8 +37,10 @@ class LoginVM extends BaseViewModel {
           prefs.user = authResponse.user;
           showNotification('Login successful');
           if (_context != null) {
-            AppRouter.goDashboard(_context!);
+            AppRouter.goBooks(_context!);
           }
+        } else {
+          showNotification(res.error.toString());
         }
       } catch (e) {
         hideLoading();

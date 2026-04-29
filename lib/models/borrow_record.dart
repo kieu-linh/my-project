@@ -26,21 +26,22 @@ class BorrowRecord {
   });
 
   factory BorrowRecord.fromJson(Map<String, dynamic> json) {
+    final book = json['book'] as Map<String, dynamic>?;
     return BorrowRecord(
       id: json['id']?.toString() ?? '',
-      bookId: json['book_id'] ?? '',
-      memberId: json['member_id'] ?? '',
-      bookTitle: json['book_title'] ?? '',
-      coverUrl: json['cover_url'],
-      memberName: json['member_name'] ?? '',
-      borrowDate: json['borrow_date'] != null
-          ? DateTime.parse(json['borrow_date'])
+      bookId: json['bookId']?.toString() ?? '',
+      memberId: json['userId']?.toString() ?? '',
+      bookTitle: book?['title'] ?? '',
+      coverUrl: book?['coverUrl'],
+      memberName: '', // API response không có memberName
+      borrowDate: json['borrowedAt'] != null
+          ? DateTime.parse(json['borrowedAt'])
           : DateTime.now(),
-      dueDate: json['due_date'] != null
-          ? DateTime.parse(json['due_date'])
+      dueDate: json['dueDate'] != null
+          ? DateTime.parse(json['dueDate'])
           : DateTime.now().add(const Duration(days: 14)),
-      returnDate: json['return_date'] != null
-          ? DateTime.parse(json['return_date'])
+      returnDate: json['returnedAt'] != null
+          ? DateTime.parse(json['returnedAt'])
           : null,
       status: _parseStatus(json['status']),
     );
@@ -52,6 +53,8 @@ class BorrowRecord {
         return BorrowStatus.returned;
       case 'overdue':
         return BorrowStatus.overdue;
+      case 'active':
+        return BorrowStatus.borrowed;
       default:
         return BorrowStatus.borrowed;
     }

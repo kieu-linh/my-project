@@ -52,5 +52,23 @@ class BookListVM extends BaseViewModel {
     }
   }
 
+  Future<void> borrowBook(int bookId) async {
+    showLoading();
+    try {
+      final res = await api.borrowRepo.createBorrow(bookId);
+      hideLoading();
+      // Kiểm tra response có thành công không
+      if (res['error'] != null) {
+        showError(res['error'].toString());
+      } else {
+        showNotification('Borrowed successfully');
+        loadBooks();
+      }
+    } catch (e) {
+      hideLoading();
+      showError(e.toString());
+    }
+  }
+
   void refresh() => loadBooks();
 }
